@@ -78,3 +78,104 @@ Description of some options (more can be found in _`args.py`_):
   url={https://ieeexplore.ieee.org/document/9414142}
 }
 ```
+
+## Given three churn datasets, which will perform best?
+### - ONE model on ONE dataset, OR
+### - THREE models on THREE cuts of the data.
+
+
+#### More generally:
+
+Given `n` datasets of "similar"-problem-different-environment data, what is the
+relationship of number of models and model performance.
+
+TODO: Image of one dataset by itself, n datasets together, all in different colors.
+
+Though, for this hack, I'm going to try to build a  [transformer][https://arxiv.org/abs/1706.03762]. 
+
+Transformers have been getting a lot of hype because of [Chatgpt](https://openai.com/blog/chatgpt/)
+and Tesla incorporating them.
+
+And, I think maybe a random forest for the n models. And `n` will be 3. Just because
+they are wicked easy.
+
+The null hypothesis is that one model could not surpass the predictive power of three models
+on three cuts of "similar"-problem-different-environment data.
+
+Of course we could include things like; size of the data, "similarness", etc. But,
+for the sake of simplicity, we will consider ANY size and degree of "similarness".
+
+I will try for proof my contradiction. And thus, I will try to make one really dope
+model (and try to make the other ones pretty good to).
+
+This is in no way actual research! But maybe on the way to research!
+
+
+#### The Approach
+
+- Find three open source transaction datasets.
+- Find [pre-trained model weights](https://pytorch.org/hub/) or my own from training TabFormer.
+- White board the model architecture.
+- Recreate data, model, evaluate loop from personal template.
+- Model the code base.
+- Code it up.
+
+
+##### Thinking through the codebase some..
+
+- [] requirements.txt
+- [] setup.py
+- [] bin directory for cli
+- [] research
+  - [] EDA notebooks
+-   [] package directory
+   - [] data cleaner script
+  - [] model training for one
+  - [] model training for three
+  - [] optional model vizualization
+  - [] register cli
+
+
+###### CLI functionality notes:
+
+- Just the models, potentially with/without vizualization. 
+- [] Swith over to click.
+
+``` bash
+run_model neo --train_iters 1000 --a .04738 --no_viz
+```
+
+``` bash
+run_model tts train_iters 1000 --a .04738 --viz
+```
+
+###### Bash scripts
+- [] Bashscripts to move and delete checkpoints.
+- [] Simple bash script to install the dependencies or docker image.
+
+
+###### Model script functionality
+
+- [] Learn transformer.
+- [] Learn transfer learning.
+- [] Print out state of model at some intervals in case there is an exception.
+- [] Design models to be able to take that state and start again.
+- [] Need a directory `/data` to read from.
+- [] Need a directory `/output` to write to.
+- [] Output directory should create folders based on time stamp and custom input.
+  - v1, v2 naming convention is good.
+  - should drop model params in a config.
+- [] May do some parts in rust for speed bonus. We'll see.
+- [] Makes sense to have separate training loops.
+- [] Put a cli on the model scripts to accept arbitrary arguments.
+- [] Random seed in each script.
+- [] A way to stop the model.
+- [X] Checkout some software tuning for the transformer.
+  - https://www.microsoft.com/en-us/research/blog/%C2%B5transfer-a-technique-for-hyperparameter-tuning-of-enormous-neural-networks/
+  - https://developer.nvidia.com/blog/fast-fine-tuning-of-ai-transformers-using-rapids-machine-learning/
+- Since the models will be massively parallelized, they can be run efficeintly
+  in a sequential manner. Ie; one after another.
+  - Random forest I will use njobs parameter in sci-kit learn class to parallelize
+    on cores.
+  - Transformer will run in batches on GPU. 
+- The three stooges will have to take separate arguments, so I'll args/kwargs.
