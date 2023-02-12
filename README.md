@@ -20,7 +20,7 @@ This repository provides the pytorch source code, and data for tabular transform
 
 These can be installed using yaml by running : 
 ```
-conda env create -f setup.yml
+pip3 install -r requirements.txt
 ```
 ---
 
