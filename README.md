@@ -56,6 +56,18 @@ $ python main.py --do_train --lm_type gpt2 --field_ce --flatten --data_type card
                  --output_dir [output_dir]
     
 ```
+To run a interactive python environment with the model:
+```
+
+$ python main.py --do_eval --lm_type gpt2 --field_ce --flatten --data_type card \
+                 --data_root [path_to_data] --output_dir [output_dir] \
+		 --checkpoint 370000 --cached 
+```
+To predict using the model:
+```
+tab_net.model(test_data[0])
+```
+See `models/tabformer_gpt2.py` for the contents of the output.
 
 Description of some options (more can be found in _`args.py`_):
 * `--data_type` choices are `prsa` and `card` for Beijing PM2.5 dataset and credit-card transaction dataset respecitively. 

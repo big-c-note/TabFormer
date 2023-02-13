@@ -101,8 +101,35 @@ def main(args):
             field_ce=args.field_ce,
             flatten=args.flatten,
         )
+        if not args.do_eval:
+            setattr(tab_net, "vocab", vocab)
 
     log.info(f"model initiated: {tab_net.model.__class__}")
+
+    if args.checkpoint:
+        model_path = join(args.output_dir, f"checkpoint-{args.checkpoint}")
+    else:
+        model_path = args.output_dir
+
+    if args.do_eval:
+        tab_net.model.from_pretrained(model_path, vocab=vocab)
+        """
+        self,
+        input_ids=None,
+        past=None,
+        attention_mask=None,
+        token_type_ids=None,
+        position_ids=None,
+        head_mask=None,
+        inputs_embeds=None,
+        labels=None,
+        use_cache=True,
+
+        I can load it with just `input_ids`?
+        """
+        import ipdb
+
+        ipdb.set_trace()
 
     if args.flatten:
         collactor_cls = "DataCollatorForLanguageModeling"
@@ -120,7 +147,7 @@ def main(args):
         logging_dir=args.log_dir,  # directory for storing logs
         save_steps=args.save_steps,
         do_train=args.do_train,
-        # do_eval=args.do_eval,
+        do_eval=args.do_eval,
         # evaluation_strategy="epoch",
         prediction_loss_only=True,
         overwrite_output_dir=True,
@@ -134,11 +161,6 @@ def main(args):
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
     )
-
-    if args.checkpoint:
-        model_path = join(args.output_dir, f"checkpoint-{args.checkpoint}")
-    else:
-        model_path = args.output_dir
 
     trainer.train(model_path=model_path)
 
