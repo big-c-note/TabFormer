@@ -179,3 +179,16 @@ run_model tts train_iters 1000 --a .04738 --viz
     on cores.
   - Transformer will run in batches on GPU. 
 - The three stooges will have to take separate arguments, so I'll args/kwargs.
+
+###### Visuals.
+- [] Optional training vizualizations of the transformer.
+  - https://www.microsoft.com/en-us/research/blog/%C2%B5transfer-a-technique-for-hyperparameter-tuning-of-enormous-neural-networks/
+  - https://github.com/3b1b/manim
+  - https://github.com/vivek3141/dl-visualization
+- [] Or could be the simple loss over time. Ref: Stanford ML Class.
+
+###### Data
+
+
+##### Interesting finds.
+- https://medium.com/distributed-computing-with-ray/hyperparameter-optimization-for-transformers-a-guide-c4e32c6c989b
